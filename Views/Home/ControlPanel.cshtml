@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Control Panel";
+}
+<h2>@ViewData["Title"].</h2>
+
+
+
+
+<br /><br />
+<form action="~/Testing/CreateTest" method="get">
+    <input type="submit" value="Create A New Test"/>
+</form>
+
+
+<br /><br />
+<form action="~/Testing/ViewTests" method="get">
+    <input type="submit" value="View/Edit All Tests" />
+</form>
+
+<br /><br />
+<form action="~/Users" method="get">
+    <input type="submit" value="Edit Users/Assign Tests" />
+</form>
+
+<br /><br />
+<form action="~/Testing/SearchData" method="get">
+    <input type="submit" value="Search Data" />
+</form>

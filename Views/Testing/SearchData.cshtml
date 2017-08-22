@@ -1,0 +1,79 @@
+@model SearchDataViewModel
+@{
+    ViewData["Title"] = "ViewTests";
+}
+
+<h2>ViewTests</h2>
+
+<body>
+    <div>
+        @Html.HiddenFor(m => m.Filters, Model.Filters)
+        @Html.HiddenFor(m => m.Results, Model.Results)
+        <br />
+        <form asp-controller="Testing" asp-action="SearchData" method="post" class="form-horizontal" style="margin: 0; padding: 0;">
+            <table class="table table-bordered table-striped table-condensed panel panel-primary">
+                <thead>
+                    <tr>
+                        <th>Filter Type</th>
+                        <th>Filter Value</th>
+                        <th>Add Filter</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Filters != null && Model.Filters.Count() > 0)
+                    {
+                        for (int i = 0; i < Model.Filters.Count(); i++)
+                        {
+                            <tr>
+
+                                <td>@Html.DropDownListFor(m => m.Filters[i].FilterType, SearchDataViewModel.FilterList, null, new { })</td>
+                                <td>@Html.TextBoxFor(m => m.Filters[i].FilterValue, Model.Filters[i].FilterValue)</td>
+                                <td></td>
+                            </tr>
+                        }
+
+
+                    }
+
+                    <tr>
+                        <td>@Html.DropDownListFor(m => m.NewFilterType, SearchDataViewModel.FilterList, null, new { })</td>
+                        <td> @Html.TextBoxFor(m => m.NewFilterValue, Model.NewFilterValue)</td>
+
+                        <td><input type="submit" value="Add New Filter" /></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </form>
+        <br /><br />
+
+        @if (Model.Results != null && Model.Results.Count() > 0)
+        {
+            <table class="table table-bordered table-striped table-condensed panel panel-primary">
+                <thead>
+                    <tr>
+                        <th>Test Name</th>
+                        <th>User Name</th>
+                        <th>Question Name</th>
+                        <th>Question Answer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Results.Count(); i++)
+                {
+                        <tr>
+                            <td>@Html.LabelFor(m => m.Results[i].TestName, Model.Results[i].TestName)</td>
+                            <td>@Html.LabelFor(m => m.Results[i].UserName, Model.Results[i].UserName)</td>
+                            <td>@Html.LabelFor(m => m.Results[i].QuestionName, Model.Results[i].QuestionName)</td>
+                            <td>@Html.LabelFor(m => m.Results[i].Result, Model.Results[i].Result)</td>
+                        </tr>
+
+                    }
+
+
+                </tbody>
+            </table>
+        }
+    </div>
+</body>

@@ -1,0 +1,60 @@
+@{
+    ViewData["Title"] = "View";
+}
+
+@model UserViewModel
+<h2>View</h2>
+
+@Html.HiddenFor(m=>m.ListedUser.Id, Model.ListedUser.Id)
+@Html.HiddenFor(m=>m.ListedUser.UserName, Model.ListedUser.UserName)
+
+<form asp-controller="Users" asp-action="SaveUserRole" method="post" class="form-horizontal">
+    @Html.HiddenFor(m=>m.ListedUser.Id, Model.ListedUser.Id)
+    @Html.HiddenFor(m=>m.ListedUser.UserName, Model.ListedUser.UserName)
+    @Html.DropDownListFor(m => m.RoleString, Model.RoleList, null, new { })
+    <input type="submit" value="Change User Role" />
+
+
+</form>
+
+
+
+<form asp-controller="Users" asp-action="AllowTestForUser" method="post" class="form-horizontal">
+    <div>
+        @Html.HiddenFor(m => m.ListedUser.Id, Model.ListedUser.Id)
+        @Html.HiddenFor(m=>m.ListedUser.UserName, Model.ListedUser.UserName)
+        @Html.LabelFor(m=>m.ListedUser.UserName, Model.ListedUser.UserName)
+
+        <br /><br />
+        <div>
+
+            <br /><br />
+            Allowed Tests for @Model.ListedUser.UserName
+            <br />
+
+            @if (Model.ListedUser.AllowedTests != null && Model.ListedUser.AllowedTests.Count() > 0)
+            {
+
+                @for (int i=0;i<Model.ListedUser.AllowedTests.Count();i++)
+                {
+                    @Html.LabelFor(m=>m.ListedUser.AllowedTests[i].TestName,Model.ListedUser.AllowedTests[i].TestName)
+                    <br />
+
+                }
+            }
+        </div>
+
+
+    </div>
+</form>
+
+
+<form asp-controller="Users" asp-action="AllowTestForUser" method="post" class="form-horizontal">
+    <div>
+       @Html.HiddenFor(m => m.ListedUser.Id, Model.ListedUser.Id)
+
+        @Html.DropDownListFor(m => m.TestIDToAdd, Model.TestList, null, new { })
+        <input type="submit" value="Allow Test" />
+
+    </div>
+</form>

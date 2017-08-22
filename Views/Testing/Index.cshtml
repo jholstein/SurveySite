@@ -1,0 +1,47 @@
+@model ViewTestsViewModel
+@{
+    ViewData["Title"] = "ViewTests";
+}
+
+<h2>ViewTests</h2>
+
+<body>
+
+
+    @{
+        @if (Model.TestsList != null && Model.TestsList.Count > 0)
+        {
+        <table class="table">
+            <tbody>
+               
+                @for (var index = 0; index < Model.TestsList.Count; index++)
+                {
+
+                    <tr>
+
+                        <td>
+
+                            <form asp-controller="Testing" asp-action="Test" method="post" class="form-horizontal">
+                                <div>
+                                    <input asp-for="@Model.TestsList[index].TestID" name="TestID" type="hidden" />
+                                    <input type="submit" class="btn btn-default" value='@Model.TestsList[index].TestName' />
+                                </div>
+                            </form>
+
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+        }else
+        {<text>There are no tests for you to take currently.</text>}
+
+
+
+
+}
+
+
+
+</body>

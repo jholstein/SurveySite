@@ -1,0 +1,73 @@
+﻿@model TestViewModel
+@{
+    ViewData["Title"] = "TestList";
+
+}
+<h2>@ViewData["Title"].</h2>
+<body>
+@{ 
+    string testList = ViewData["TestList"].ToString();
+    WriteLiteral(testList);
+
+}
+    
+    @{ 
+        if (Model.TestID == 0)
+        {
+            <table class="table">
+                <tbody>
+                    @for (var index = 0; index < Model.Tests.Count; index++)
+                    {
+                        <tr>
+                    
+                            <td>
+                      
+                                    <form asp-controller="Testing" asp-action="Test" method="post" class="form-horizontal">
+                                        <div>
+                                            <input asp-for="@Model.Tests[index].TestID" name="TestID" type="hidden" />
+                                            <input type="submit" class="btn btn-default" value='@Model.Tests[index].TestName'  />
+                                        </div>
+                                    </form>
+                       
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <table class="table">
+                <tbody>
+                    @for (var index = 0; index < Model.Questions.Count; index++)
+                    {
+                        <tr>
+
+                            <td>
+
+                                @Model.Questions[index]
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
+    }
+
+
+
+</body>
+
+<address>
+    One Microsoft Way<br />
+    Redmond, WA 98052-6399<br />
+    <abbr title="Phone">P:</abbr>
+    425.555.0100
+</address>
+
+<address>
+    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
+    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+</address>

@@ -1,0 +1,58 @@
+﻿
+@using Testing;
+@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Testing Page";
+    var testdb = Database.Open("Tests");
+    var allTestsQueryString = "SELECT * FROM Tests ORDER BY TestName";
+    
+}
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <script>
+            function myFunction() {
+                var x = document.createElement("FORM");
+                x.setAttribute("id", "myForm");
+                document.body.appendChild(x);
+
+                var y = document.createElement("INPUT");
+                y.setAttribute("type", "text");
+                y.setAttribute("value", "Donald");
+                document.getElementById("myForm").appendChild(y);
+            }
+        </script>
+    </head>
+    <body>
+        
+        @if(IsPost) 
+        {
+           int testID = Int32.Parse(Request.Form["testname"].Split(":".ToCharArray(),2)[0]);
+           string testName = Request.Form["testname"].Split(":".ToCharArray(),2)[1];
+           var tWriter = new TestBuilder(testID,testName);
+           string toutput = tWriter.OutputTest();
+           WriteLiteral(toutput);
+           <button onclick="myFunction()">Try it 1</button>
+           
+
+        }
+        <button onclick="myFunction()">Try it</button>
+        <br>
+        @{
+            var lWriter = new ListBuilder();
+            string loutput = lWriter.OutputList();
+            WriteLiteral(loutput);
+        
+        }
+    </body>
+</html>

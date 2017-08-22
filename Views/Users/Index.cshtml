@@ -1,0 +1,55 @@
+@model UserListViewModel
+@{
+    ViewData["Title"] = "Edit Users";
+}
+
+
+
+
+    <div class="top-buffer"></div>
+    <div class="panel panel-primary">
+
+    <br /><br />
+       
+    
+        @Html.HiddenFor(m=>m.SortIndex,Model.SortIndex)
+        @for (int index = 0; index < Model.Users.Count; index++)
+        {
+            @Html.HiddenFor(m => m.Users[index].ListedUser.Id, Model.Users[index].ListedUser.Id)
+            <div>
+                @Html.HiddenFor(m => m.Users[index].ListedUser.UserName, Model.Users[index].ListedUser.UserName)
+                
+
+                @Html.LabelFor(m => m.Users[index].ListedUser.UserName, Model.Users[index].ListedUser.UserName)
+                @Html.LabelFor(m => m.Users[index].ListedUser.Id, Model.Users[index].ListedUser.Id)
+
+
+
+
+
+                
+                <form asp-controller="Users" asp-action="User" method="get" class="form-horizontal">
+                    <input asp-for="@Model.Users[index].ListedUser.Id" name="SelectedID" type="hidden" />
+                    @Html.HiddenFor(m => m.Users[index].ListedUser.UserName, Model.Users[index].ListedUser.UserName)
+                    @Html.HiddenFor(m => m.Users[index].ListedUser.Id, Model.Users[index].ListedUser.Id)
+                    <input type="submit" value="User Page" />
+                </form>
+                <br>
+            </div>
+
+
+
+
+
+
+        }
+        
+           
+
+            
+        
+    </div>
+
+   
+
+   

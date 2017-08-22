@@ -1,0 +1,216 @@
+@model Test
+
+@{
+    ViewData["Title"] = "Test";
+    
+}
+
+
+
+
+
+<h2>@Model.TestName</h2>
+
+    <script>
+        function questionSetType(classN, type)
+        {
+            var classId = classN + ":" + type
+
+
+            hideDivClass(classN + ":1")
+            hideDivClass(classN + ":2")
+            hideDivClass(classN + ":3")
+            hideDivClass(classN + ":4")
+            hideDivClass(classN + ":5")
+            hideDivClass(classN + ":6")
+
+            showDivClass(classId)
+
+        }
+
+
+
+
+        function showDivClass(classN)
+        {
+            var elements = document.getElementsByClassName(classN)
+            if (elements != null)
+            {
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].style.display = "block";
+                }
+
+            }
+        }
+
+        function hideDivClass(classN) {
+            var elements = document.getElementsByClassName(classN)
+            if (elements != null) {
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].style.display = "none";
+                }
+
+            }
+        }
+
+
+        function editorToggle()
+        {
+            var noedit = document.getElementById("NoEdit")
+            var edit = document.getElementById("Edit")
+            if (noedit.style.display == "none") { noedit.style.display = "block"}
+            else if (noedit.style.display == "block") { noedit.style.display = "none" }
+
+            if (edit.style.display == "none") { edit.style.display = "block" }
+            else if (edit.style.display == "block") { edit.style.display = "none" }
+        }
+
+
+
+        
+
+
+
+
+
+
+    </script>
+
+
+@if (User.IsInRole("SiteAdmin") || User.IsInRole("Researcher"))
+{
+    <button onclick="editorToggle()">Edit</button> 
+}
+
+<div id="NoEdit" style="display:block">
+    <form asp-controller="Testing" asp-action="SubmitTestData" method="post" class="form-horizontal">
+        @Html.HiddenFor(m => m.TestID, Model.TestID)
+        @Html.HiddenFor(m => m.TestName, Model.TestName)
+        
+        @if (Model.Questions != null && Model.Questions.Count() != 0)
+        {
+        @for (int i = 0; i < Model.Questions.Count(); i++)
+        {
+            //Shared Html
+            @Html.HiddenFor(m => m.Questions[i].QuestionID, Model.Questions[i].QuestionID)
+            @Html.HiddenFor(m => m.Questions[i].QuestionType, Model.Questions[i].QuestionType)
+            @Html.HiddenFor(m => m.Questions[i].QuestionName, Model.Questions[i].QuestionName)
+
+
+            // TextBoxQuestion
+            <div class="@Model.Questions[i].QuestionID:1">
+                @Html.LabelFor(m => m.Questions[i].QuestionName, Model.Questions[i].QuestionName)
+                @Html.TextBoxFor(m => m.Questions[i].QuestionAnswer, Model.Questions[i].QuestionAnswer)
+            </div>
+
+            // CheckBoxQuestion
+            <div class="@Model.Questions[i].QuestionID:2">
+
+                @Html.LabelFor(m => m.Questions[i].QuestionName, Model.Questions[i].QuestionName)
+                @Html.CheckBoxFor(m => m.Questions[i].BooleanQuestionAnswer, Model.Questions[i].QuestionAnswer)
+
+            </div>
+
+
+            <br>
+            <script>questionSetType(@Model.Questions[i].QuestionID,@Model.Questions[i].QuestionType) </script>
+
+        }
+        }
+        @if (User.IsInRole("SiteAdmin") || User.IsInRole("Researcher"))
+        {
+            <div class="warning">
+                WARNING!!!! TEST WILL NOT SUBMIT DATA UNLESS USER HAS TEST ALLOWED
+            </div>
+
+        }
+        <input type="submit" value="Submit the Test">
+    </form>
+</div>
+
+
+
+
+<div id="Edit" style="display:none">
+    <form asp-controller="Testing" asp-action="EditTestData" method="post" class="form-horizontal">
+        @Html.HiddenFor(m => m.TestID, Model.TestID)
+        @Html.HiddenFor(m => m.TestName, Model.TestName)
+
+
+
+        @if (Model.Questions != null && Model.Questions.Count() != 0)
+        {
+            @for (int i = 0; i < Model.Questions.Count(); i++)
+            {
+
+                //Shared Html
+
+
+                <hr>
+                @Html.HiddenFor(m => m.Questions[i].QuestionID, Model.Questions[i].QuestionID)
+                @Html.TextBoxFor(m => m.Questions[i].QuestionName, Model.Questions[i].QuestionName)
+
+
+
+                // TextBoxQuestion
+                <div class="@Model.Questions[i].QuestionID:1">
+
+
+                    @Html.TextBoxFor(m => m.Questions[i].QuestionAnswer, Model.Questions[i].QuestionAnswer)
+                </div>
+
+                // CheckBoxQuestion
+                <div class="@Model.Questions[i].QuestionID:2">
+
+
+                    @Html.CheckBoxFor(m => m.Questions[i].BooleanQuestionAnswer, Model.Questions[i].QuestionAnswer)
+
+                </div>
+
+
+                <br>
+
+                @Html.DropDownListFor(m => m.Questions[i].QuestionType, new SelectList(SurveySite.Data.Enumerations.QuestionTypesList, "Value", "Text"), null, new { @onchange = "questionSetType(" + Model.Questions[i].QuestionID + ",this.value)" })
+                <br><br>
+
+                <script>questionSetType(@Model.Questions[i].QuestionID,@Model.Questions[i].QuestionType) </script>
+
+            }
+        }
+        <hr>
+        <input type="submit" value="Save Changes to Test">
+        <input type="button" onclick="">
+    </form>
+    <form asp-controller="Testing" asp-action="MakeQuestion" method="post" class="form-horizontal" >
+        @Html.HiddenFor(m=>m.Questions,Model.Questions)
+        @Html.HiddenFor(m => m.TestID, Model.TestID)
+        @Html.HiddenFor(m => m.TestName, Model.TestName)
+        <input type="submit" value="Make New Question">
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
